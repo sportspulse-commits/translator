@@ -1,0 +1,94 @@
+﻿[
+  {
+    "id": "decode-001",
+    "input": "I got a letter from Medicare saying my Part B premium is going up to $185.00 starting January 1st. Policy number M-4471-882-X. I don't understand what they want me to do.",
+    "expected_bucket": "DECODE",
+    "must_contain_verbatim": ["$185.00", "January 1st", "M-4471-882-X", "Part B"],
+    "must_not_contain": ["I hope this helps", "Great question", "[Your Name]"],
+    "max_words": 165,
+    "max_reading_level": 9.0
+  },
+  {
+    "id": "decode-002",
+    "input": "I got a bill from Memorial Hospital for $1,247.50 dated March 15, 2026. It says payment is due by April 30. I already paid this two weeks ago.",
+    "expected_bucket": "DECODE",
+    "must_contain_verbatim": ["$1,247.50", "March 15, 2026", "April 30", "Memorial Hospital"],
+    "must_not_contain": ["I hope this helps"],
+    "max_words": 165,
+    "max_reading_level": 9.0
+  },
+  {
+    "id": "respond-001",
+    "input": "My grandson Jake texted me asking if I can come to his graduation on May 22nd in Boston. I want to say yes but explain that I need to figure out flights.",
+    "expected_bucket": "RESPOND",
+    "must_contain_verbatim": ["Jake", "May 22nd", "Boston"],
+    "must_not_contain": ["[Your Name]", "I hope this helps"],
+    "max_words": 200,
+    "max_reading_level": 9.0
+  },
+  {
+    "id": "compose-001",
+    "input": "I want to write a thank you note to my neighbor Mrs. Chen who brought us soup when I was sick last week.",
+    "expected_bucket": "COMPOSE",
+    "must_contain_verbatim": ["Mrs. Chen"],
+    "must_not_contain": ["[Your Name]", "I hope this helps"],
+    "max_words": 275,
+    "max_reading_level": 9.0
+  },
+  {
+    "id": "explain-001",
+    "input": "What is a Required Minimum Distribution and why does my financial advisor keep mentioning it?",
+    "expected_bucket": "EXPLAIN",
+    "must_contain_verbatim": [],
+    "must_not_contain": ["I hope this helps", "delve"],
+    "max_words": 220,
+    "max_reading_level": 9.5
+  },
+  {
+    "id": "decide-001",
+    "input": "I'm trying to decide between staying in my house or moving to a senior living community. The community costs $4,500 a month but my house has stairs.",
+    "expected_bucket": "DECIDE",
+    "must_contain_verbatim": ["$4,500"],
+    "must_not_contain": ["I hope this helps"],
+    "max_words": 440,
+    "max_reading_level": 9.5
+  },
+  {
+    "id": "plan-001",
+    "input": "I need to plan a small 80th birthday party for my husband at our house in June. About 20 people.",
+    "expected_bucket": "PLAN",
+    "must_contain_verbatim": ["80th", "20 people"],
+    "must_not_contain": ["I hope this helps"],
+    "max_words": 550,
+    "max_reading_level": 9.5
+  },
+  {
+    "id": "verify-001",
+    "input": "Someone called saying they're from the IRS and I owe $4,200 and need to pay in iTunes gift cards today or be arrested.",
+    "expected_bucket": "VERIFY",
+    "must_contain_verbatim": ["$4,200"],
+    "must_contain_phrases": ["scam"],
+    "must_not_contain": ["I hope this helps"],
+    "max_words": 495,
+    "max_reading_level": 9.5
+  },
+  {
+    "id": "verify-002",
+    "input": "I got an email from 'Microsoft Support' saying my computer has 47 viruses and to call 1-888-555-0199 immediately.",
+    "expected_bucket": "VERIFY",
+    "must_contain_verbatim": ["1-888-555-0199"],
+    "must_contain_phrases": ["scam"],
+    "must_not_contain": ["I hope this helps"],
+    "max_words": 495,
+    "max_reading_level": 9.5
+  },
+  {
+    "id": "create-001",
+    "input": "I need a short toast for my daughter Emily's wedding next Saturday. She's marrying Tom.",
+    "expected_bucket": "CREATE",
+    "must_contain_verbatim": ["Emily", "Tom"],
+    "must_not_contain": ["I hope this helps", "[Your Name]"],
+    "max_words": 440,
+    "max_reading_level": 9.5
+  }
+]
