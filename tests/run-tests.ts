@@ -1,4 +1,5 @@
-﻿import 'dotenv/config';
+﻿import { config } from 'dotenv';
+config({ path: '.env.local' });
 import cases from './test-cases.json';
 import { runPipeline } from '../lib/pipeline';
 import * as fs from 'fs';

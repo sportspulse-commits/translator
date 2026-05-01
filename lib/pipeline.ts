@@ -5,7 +5,11 @@ import type { Bucket, PipelineResponse } from './types';
 import { CLASSIFIER_OPTIMIZER_PROMPT } from '@/prompts';
 import { randomUUID } from 'crypto';
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+let _anthropic: Anthropic | null = null;
+function getAnthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
+  return _anthropic;
+}
 
 const VERIFY_MODEL = 'claude-sonnet-4-5';
 const ANSWER_MODEL = 'claude-sonnet-4-5';
@@ -54,7 +58,7 @@ export async function runPipeline(input: string): Promise<PipelineResponse> {
   const timings: Record<string, number> = {};
 
   const t1 = Date.now();
-  const classifyResult = await anthropic.messages.create({
+  const classifyResult = await getAnthropic().messages.create({
     model: FAST_MODEL,
     max_tokens: 1500,
     temperature: 0,
@@ -69,7 +73,7 @@ export async function runPipeline(input: string): Promise<PipelineResponse> {
   const answerModel = parsed.bucket === 'VERIFY' ? VERIFY_MODEL : ANSWER_MODEL;
   const answerTemp = parsed.bucket === 'CREATE' ? 0.4 : 0;
 
-  const answerResult = await anthropic.messages.create({
+  const answerResult = await getAnthropic().messages.create({
     model: answerModel,
     max_tokens: 2000,
     temperature: answerTemp,
