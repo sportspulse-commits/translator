@@ -18,6 +18,23 @@ const StopIcon = ({ size = 20 }: { size?: number }) => (
   </svg>
 );
 
+// Split text into ~200-char chunks at sentence boundaries (fixes iOS 255-char TTS limit)
+function chunkText(text: string, maxLen = 200): string[] {
+  const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) ?? [text];
+  const chunks: string[] = [];
+  let buf = '';
+  for (const s of sentences) {
+    if (buf.length + s.length > maxLen && buf) {
+      chunks.push(buf.trim());
+      buf = s;
+    } else {
+      buf += s;
+    }
+  }
+  if (buf.trim()) chunks.push(buf.trim());
+  return chunks.filter(Boolean);
+}
+
 export function ReadAloudButton({ text }: { text: string }) {
   const [reading, setReading] = useState(false);
   const [supported, setSupported] = useState(false);
@@ -31,7 +48,7 @@ export function ReadAloudButton({ text }: { text: string }) {
     };
   }, []);
 
-  // Cancel and restart when text changes while reading
+  // Cancel and reset when text changes while reading (e.g. after refine)
   useEffect(() => {
     if (reading) {
       window.speechSynthesis?.cancel();
@@ -45,14 +62,21 @@ export function ReadAloudButton({ text }: { text: string }) {
     window.speechSynthesis.cancel();
 
     const plain = stripMarkdown(text);
-    const utterance = new SpeechSynthesisUtterance(plain);
-    utterance.lang = 'en-US';
-    utterance.rate = 0.88;
-    utterance.pitch = 1;
-    utterance.onend = () => setReading(false);
-    utterance.onerror = () => setReading(false);
+    const chunks = chunkText(plain);
+    let i = 0;
 
-    window.speechSynthesis.speak(utterance);
+    function speakNext() {
+      if (i >= chunks.length) { setReading(false); return; }
+      const utt = new SpeechSynthesisUtterance(chunks[i++]);
+      utt.lang = 'en-US';
+      utt.rate = 0.88;
+      utt.pitch = 1;
+      utt.onend = speakNext;
+      utt.onerror = () => setReading(false);
+      window.speechSynthesis.speak(utt);
+    }
+
+    speakNext();
     setReading(true);
   }
 
