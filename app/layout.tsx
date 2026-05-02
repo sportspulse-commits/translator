@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 import { Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 
@@ -24,10 +25,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
-      <body style={{ margin: 0, background: 'var(--tx-bg)', height: '100%' }}>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
+        <body style={{ margin: 0, background: 'var(--tx-bg)', height: '100%' }}>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

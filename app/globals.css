@@ -842,3 +842,342 @@ html, body {
     font-size: calc(22px * var(--tx-font-scale));
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+   Header right / auth link
+   ───────────────────────────────────────────────────────────────────── */
+.tx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tx-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tx-header-link {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--tx-ink-mute);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tx-header-link:hover {
+  color: var(--tx-honey);
+  border-bottom-color: var(--tx-honey);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Plan indicator (free tier usage counter)
+   ───────────────────────────────────────────────────────────────────── */
+.tx-plan-indicator {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  color: var(--tx-ink-mute);
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.tx-plan-indicator a {
+  color: var(--tx-honey);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.tx-plan-indicator a:hover {
+  text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Locked feature state (Pro badge)
+   ───────────────────────────────────────────────────────────────────── */
+.tx-locked-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--tx-honey);
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 99px;
+  margin-left: auto;
+}
+
+.tx-scan-locked {
+  opacity: 0.72;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tx-scan-locked:hover {
+  opacity: 1;
+}
+
+.tx-refine-locked {
+  opacity: 0.72;
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.tx-refine-locked:hover {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Auth pages (sign-in / sign-up)
+   ───────────────────────────────────────────────────────────────────── */
+.tx-auth-page {
+  min-height: 100vh;
+  background: var(--tx-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px 48px;
+  gap: 8px;
+}
+
+.tx-auth-wordmark {
+  font-family: var(--font-serif), serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--tx-ink);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.tx-auth-sub {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  color: var(--tx-ink-mute);
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Account page
+   ───────────────────────────────────────────────────────────────────── */
+.tx-account-title {
+  font-family: var(--font-serif), serif;
+  font-size: calc(28px * var(--tx-font-scale));
+  font-weight: 400;
+  color: var(--tx-ink);
+  margin: 0 0 24px;
+  letter-spacing: -0.3px;
+}
+
+.tx-account-success {
+  background: #e6f5ec;
+  color: #1a5c34;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.tx-plan-card {
+  background: var(--tx-surface);
+  border: 1.5px solid var(--tx-border);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.tx-plan-badge {
+  display: inline-block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--tx-honey);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+}
+
+.tx-usage {
+  margin-bottom: 20px;
+}
+
+.tx-usage-label {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  color: var(--tx-ink-mute);
+  margin: 0 0 8px;
+}
+
+.tx-usage-track {
+  height: 8px;
+  background: var(--tx-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.tx-usage-fill {
+  height: 100%;
+  background: var(--tx-honey);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.tx-plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tx-plan-features li {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 15px;
+  color: var(--tx-ink-mute);
+  padding-left: 20px;
+  position: relative;
+}
+
+.tx-plan-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--tx-honey);
+  font-weight: 700;
+}
+
+.tx-plan-feature-pro {
+  color: var(--tx-ink) !important;
+  font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Account actions (upgrade / manage)
+   ───────────────────────────────────────────────────────────────────── */
+.tx-account-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.tx-upgrade-option {
+  background: var(--tx-surface);
+  border: 1.5px solid var(--tx-border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.tx-upgrade-option-alt {
+  background: var(--tx-bg-sunk);
+}
+
+.tx-upgrade-name {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--tx-ink);
+  margin-bottom: 4px;
+}
+
+.tx-upgrade-desc {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  color: var(--tx-ink-mute);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.tx-upgrade-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  background: var(--tx-honey);
+  color: #fff;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.tx-upgrade-btn:hover:not(:disabled) {
+  background: #d4913a;
+}
+
+.tx-upgrade-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.tx-upgrade-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tx-upgrade-btn-alt {
+  background: var(--tx-ink-mute);
+}
+
+.tx-upgrade-btn-alt:hover:not(:disabled) {
+  background: var(--tx-ink);
+}
+
+.tx-manage-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  background: transparent;
+  color: var(--tx-ink);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1.5px solid var(--tx-border);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.tx-manage-btn:hover:not(:disabled) {
+  border-color: var(--tx-honey);
+  background: var(--tx-bg-sunk);
+}
+
+.tx-manage-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tx-account-back {
+  display: block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  color: var(--tx-ink-mute);
+  text-decoration: none;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.tx-account-back:hover {
+  color: var(--tx-honey);
+}

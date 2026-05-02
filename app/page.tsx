@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { VoiceButton } from '@/components/VoiceButton';
@@ -13,6 +14,14 @@ import { ShareButton } from '@/components/ShareButton';
 type Phase = 'idle' | 'loading' | 'answer' | 'error';
 type Bucket = 'DECODE' | 'RESPOND' | 'COMPOSE' | 'EXPLAIN' | 'DECIDE' | 'PLAN' | 'VERIFY' | 'CREATE';
 type Tone = 'calm' | 'warm' | 'alert';
+type Plan = 'free' | 'pro' | 'family';
+
+interface UserMeta {
+  signedIn: boolean;
+  plan: Plan;
+  queriesUsed: number;
+  queriesLimit: number;
+}
 
 function bucketToTone(bucket: Bucket | null): Tone {
   if (bucket === 'VERIFY') return 'alert';
@@ -20,11 +29,10 @@ function bucketToTone(bucket: Bucket | null): Tone {
   return 'calm';
 }
 
-// Normalize inline markdown headings/bullets that the pipeline may emit without newlines
 function normalizeMarkdown(text: string): string {
   return text
-    .replace(/([^\n])\s+(#{1,3}\s)/g, '$1\n\n$2')  // add newline before inline headings
-    .replace(/([^\n-])\s+-\s(?=\S)/g, '$1\n- ')     // add newline before inline bullets
+    .replace(/([^\n])\s+(#{1,3}\s)/g, '$1\n\n$2')
+    .replace(/([^\n-])\s+-\s(?=\S)/g, '$1\n- ')
     .trim();
 }
 
@@ -50,6 +58,8 @@ function WorkingIndicator() {
 }
 
 export default function Home() {
+  const { isSignedIn } = useUser();
+  const [userMeta, setUserMeta] = useState<UserMeta | null>(null);
   const [input, setInput] = useState('');
   const [phase, setPhase] = useState<Phase>('idle');
   const [answer, setAnswer] = useState<string | null>(null);
@@ -63,10 +73,17 @@ export default function Home() {
   const abortRef = useRef<AbortController | null>(null);
   const cancelTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-focus textarea on mount
   useEffect(() => {
     textareaRef.current?.focus();
   }, []);
+
+  // Fetch user plan whenever auth state changes
+  useEffect(() => {
+    fetch('/api/me')
+      .then(r => r.json())
+      .then(setUserMeta)
+      .catch(() => {});
+  }, [isSignedIn]);
 
   async function handleSubmit() {
     if (!input.trim()) return;
@@ -86,13 +103,23 @@ export default function Home() {
         body: JSON.stringify({ input }),
         signal: abortRef.current.signal,
       });
-      if (!res.ok) throw new Error('failed');
-      const data = await res.json();
+
       clearTimeout(cancelTimerRef.current!);
 
+      if (res.status === 402) {
+        setError('limit_reached');
+        setPhase('error');
+        return;
+      }
+      if (!res.ok) throw new Error('failed');
+
+      const data = await res.json();
       setAnswer(data.text);
       setBucket(data.bucket ?? null);
       setPhase('answer');
+
+      // Refresh usage count after a successful query
+      fetch('/api/me').then(r => r.json()).then(setUserMeta).catch(() => {});
 
       requestAnimationFrame(() => {
         scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -140,12 +167,21 @@ export default function Home() {
   }
 
   const tone = bucketToTone(bucket);
+  const featuresLocked = !userMeta?.signedIn || userMeta?.plan === 'free';
+  const isLimitError = error === 'limit_reached';
 
   return (
     <div className="tx-app">
       <header className="tx-header">
         <div className="tx-wordmark">
           Translator<span className="tx-wordmark-dot">.</span>
+        </div>
+        <div className="tx-header-right">
+          {isSignedIn ? (
+            <a href="/account" className="tx-header-link">Account</a>
+          ) : (
+            <a href="/sign-in" className="tx-header-link">Sign in</a>
+          )}
         </div>
       </header>
 
@@ -177,7 +213,10 @@ export default function Home() {
                 )}
               </div>
 
-              <ScanButton onText={(t) => setInput(prev => (prev ? prev + '\n\n' : '') + t)} />
+              <ScanButton
+                onText={(t) => setInput(prev => (prev ? prev + '\n\n' : '') + t)}
+                locked={featuresLocked}
+              />
 
               <VoiceButton
                 onTranscript={(t) => setInput(prev => (prev ? prev + ' ' : '') + t)}
@@ -188,6 +227,13 @@ export default function Home() {
                 onPick={handleStarterPick}
                 onToggle={() => setShowStarters(s => !s)}
               />
+
+              {userMeta?.signedIn && userMeta.plan === 'free' && (
+                <p className="tx-plan-indicator">
+                  {userMeta.queriesUsed} of {userMeta.queriesLimit} free queries used this month.{' '}
+                  <a href="/account">Upgrade</a>
+                </p>
+              )}
 
               <button
                 type="button"
@@ -242,7 +288,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <RefineButtons answer={answer} onRefined={setAnswer} />
+              <RefineButtons answer={answer} onRefined={setAnswer} locked={featuresLocked} />
 
               <CopyButton text={answer} />
               <ReadAloudButton text={answer} />
@@ -261,15 +307,28 @@ export default function Home() {
           {/* ── ERROR ── */}
           {phase === 'error' && (
             <>
-              <p className="tx-error" role="alert">{error}</p>
-              <button
-                type="button"
-                className="tx-help"
-                disabled={!input.trim()}
-                onClick={handleSubmit}
-              >
-                Help me
-              </button>
+              {isLimitError ? (
+                <>
+                  <p className="tx-error" role="alert">
+                    You&apos;ve used all your queries for this month.
+                  </p>
+                  <a href="/account" className="tx-help" style={{ textDecoration: 'none', textAlign: 'center' }}>
+                    See upgrade options →
+                  </a>
+                </>
+              ) : (
+                <>
+                  <p className="tx-error" role="alert">{error}</p>
+                  <button
+                    type="button"
+                    className="tx-help"
+                    disabled={!input.trim()}
+                    onClick={handleSubmit}
+                  >
+                    Help me
+                  </button>
+                </>
+              )}
               <button type="button" className="tx-restart" onClick={handleReset}>
                 Start over
               </button>

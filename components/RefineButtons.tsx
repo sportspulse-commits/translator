@@ -20,14 +20,36 @@ const LongerIcon = ({ size = 17 }: { size?: number }) => (
   </svg>
 );
 
+const LockIcon = ({ size = 14 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+  </svg>
+);
+
 export function RefineButtons({
   answer,
   onRefined,
+  locked = false,
 }: {
   answer: string;
   onRefined: (text: string) => void;
+  locked?: boolean;
 }) {
   const [loading, setLoading] = useState<'shorter' | 'longer' | null>(null);
+
+  if (locked) {
+    return (
+      <div className="tx-refine-row">
+        <a href="/account" className="tx-refine-btn tx-refine-locked" aria-label="Upgrade to Pro for Shorter / More detail">
+          <ShorterIcon size={17} />
+          <span>Shorter / More detail</span>
+          <span className="tx-locked-badge"><LockIcon size={13} /> Pro</span>
+        </a>
+      </div>
+    );
+  }
 
   async function refine(direction: 'shorter' | 'longer') {
     if (loading) return;
@@ -38,6 +60,8 @@ export function RefineButtons({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answer, direction }),
       });
+      if (res.status === 401) { window.location.href = '/sign-in'; return; }
+      if (res.status === 403) { window.location.href = '/account'; return; }
       if (!res.ok) throw new Error('failed');
       const data = await res.json();
       if (data.text) onRefined(data.text);

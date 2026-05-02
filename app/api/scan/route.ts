@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import Anthropic from '@anthropic-ai/sdk';
+import { getUserPlan, canUseFeature } from '@/lib/plan';
 
 export const maxDuration = 30;
 export const runtime = 'nodejs';
@@ -15,6 +17,14 @@ type AllowedType = typeof ALLOWED_TYPES[number];
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+
+    const planData = await getUserPlan(userId);
+    if (!canUseFeature(planData.plan, 'scan')) {
+      return NextResponse.json({ error: 'plan_required' }, { status: 403 });
+    }
+
     const { image, mimeType } = await req.json();
 
     if (!image || typeof image !== 'string') {
