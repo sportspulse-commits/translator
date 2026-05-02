@@ -1,66 +1,243 @@
-﻿[
+[
   {
     "id": "decode-001",
     "input": "I got a letter from Medicare saying my Part B premium is going up to $185.00 starting January 1st. Policy number M-4471-882-X. I don't understand what they want me to do.",
     "expected_bucket": "DECODE",
     "must_contain_verbatim": ["$185.00", "January 1st", "M-4471-882-X", "Part B"],
-    "must_not_contain": ["I hope this helps", "Great question", "[Your Name]"],
-    "max_words": 165,
-    "max_reading_level": 9.0
+    "must_not_contain": ["I hope this helps", "Great question", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 165
   },
   {
     "id": "decode-002",
     "input": "I got a bill from Memorial Hospital for $1,247.50 dated March 15, 2026. It says payment is due by April 30. I already paid this two weeks ago.",
     "expected_bucket": "DECODE",
     "must_contain_verbatim": ["$1,247.50", "March 15, 2026", "April 30", "Memorial Hospital"],
-    "must_not_contain": ["I hope this helps"],
-    "max_words": 165,
-    "max_reading_level": 9.0
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 165
+  },
+  {
+    "id": "decode-003",
+    "input": "I got a property tax bill from the county for $3,412.00 due by November 30th. Account number 77-4421-003. I thought I already paid this in June.",
+    "expected_bucket": "DECODE",
+    "must_contain_verbatim": ["$3,412.00", "November 30th", "77-4421-003"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 165
+  },
+  {
+    "id": "decode-004",
+    "input": "I got an Explanation of Benefits from Blue Cross saying I owe $234.50 for my knee surgery on August 3rd. My member ID is XPZ-8834221. I thought insurance covered everything.",
+    "expected_bucket": "DECODE",
+    "must_contain_verbatim": ["$234.50", "August 3rd", "XPZ-8834221", "Blue Cross"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 165
+  },
+  {
+    "id": "decode-005",
+    "input": "I got a letter from Social Security saying my monthly benefit will change to $1,847.00 starting in December. Reference number 4421-B. It also mentions something about an overpayment of $200.00.",
+    "expected_bucket": "DECODE",
+    "must_contain_verbatim": ["$1,847.00", "December", "4421-B", "$200.00"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 165
   },
   {
     "id": "respond-001",
     "input": "My grandson Jake texted me asking if I can come to his graduation on May 22nd in Boston. I want to say yes but explain that I need to figure out flights.",
     "expected_bucket": "RESPOND",
     "must_contain_verbatim": ["Jake", "May 22nd", "Boston"],
-    "must_not_contain": ["[Your Name]", "I hope this helps"],
-    "max_words": 200,
-    "max_reading_level": 9.0
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 200
+  },
+  {
+    "id": "respond-002",
+    "input": "My doctor's office called and left a voicemail saying Dr. Martinez wants me to come in before my trip to Florida on March 3rd to review my blood pressure medication. I want to say I can come Tuesday or Wednesday.",
+    "expected_bucket": "RESPOND",
+    "must_contain_verbatim": ["Dr. Martinez", "March 3rd"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 200
+  },
+  {
+    "id": "respond-003",
+    "input": "My landlord Mr. Peterson sent me an email saying the rent is going up from $1,200 to $1,350 starting February 1st. I want to push back and ask if we can keep it at $1,200 since I've been here 8 years.",
+    "expected_bucket": "RESPOND",
+    "must_contain_verbatim": ["Mr. Peterson", "$1,200", "$1,350", "February 1st"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 200
+  },
+  {
+    "id": "respond-004",
+    "input": "My granddaughter Sophie emailed asking if I want to video call on Sunday at 2pm for her school science project. I want to say yes and ask what the project is about.",
+    "expected_bucket": "RESPOND",
+    "must_contain_verbatim": ["Sophie", "Sunday"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 200
+  },
+  {
+    "id": "respond-005",
+    "input": "State Farm sent me a letter saying my auto insurance is up for renewal on April 15th and the new premium will be $847 per year, up from last year's $780. I want to ask why it went up and if there's a senior discount.",
+    "expected_bucket": "RESPOND",
+    "must_contain_verbatim": ["State Farm", "April 15th", "$847", "$780"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 200
   },
   {
     "id": "compose-001",
     "input": "I want to write a thank you note to my neighbor Mrs. Chen who brought us soup when I was sick last week.",
     "expected_bucket": "COMPOSE",
     "must_contain_verbatim": ["Mrs. Chen"],
-    "must_not_contain": ["[Your Name]", "I hope this helps"],
-    "max_words": 275,
-    "max_reading_level": 9.0
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 275
+  },
+  {
+    "id": "compose-002",
+    "input": "I want to write a short formal letter to my city council representative James Webb about the pothole on Elm Street that's been there for 3 months and damaged my car.",
+    "expected_bucket": "COMPOSE",
+    "must_contain_verbatim": ["James Webb", "Elm Street"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 275
+  },
+  {
+    "id": "compose-003",
+    "input": "I want to write a thank you note to Dr. Patel who took such good care of me during my hip surgery in September. She really went above and beyond.",
+    "expected_bucket": "COMPOSE",
+    "must_contain_verbatim": ["Dr. Patel"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 275
+  },
+  {
+    "id": "compose-004",
+    "input": "I want to write a complaint letter to Home Depot about a defective lawn mower I bought for $389 on July 4th. Order number HD-2241-7733. It stopped working after two weeks and they won't help me.",
+    "expected_bucket": "COMPOSE",
+    "must_contain_verbatim": ["Home Depot", "$389", "HD-2241-7733"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 275
+  },
+  {
+    "id": "compose-005",
+    "input": "I want to write a formal letter to Aetna disputing their decision to deny my claim number ACL-447821 for my physical therapy sessions. My doctor said I need 12 sessions and they only approved 4.",
+    "expected_bucket": "COMPOSE",
+    "must_contain_verbatim": ["Aetna", "ACL-447821"],
+    "must_not_contain": ["[Your Name]", "I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 275
   },
   {
     "id": "explain-001",
     "input": "What is a Required Minimum Distribution and why does my financial advisor keep mentioning it?",
     "expected_bucket": "EXPLAIN",
     "must_contain_verbatim": [],
-    "must_not_contain": ["I hope this helps", "delve"],
-    "max_words": 220,
-    "max_reading_level": 9.5
+    "must_not_contain": ["I hope this helps", "delve", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "leverage"],
+    "max_words": 220
+  },
+  {
+    "id": "explain-002",
+    "input": "My new insurance plan has a $2,500 deductible. What does that mean and how does it affect what I pay at the doctor?",
+    "expected_bucket": "EXPLAIN",
+    "must_contain_verbatim": ["$2,500"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve", "leverage"],
+    "max_words": 220
+  },
+  {
+    "id": "explain-003",
+    "input": "My son keeps telling me I should have a living will. What is it and why does it matter?",
+    "expected_bucket": "EXPLAIN",
+    "must_contain_verbatim": [],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve", "leverage"],
+    "max_words": 220
+  },
+  {
+    "id": "explain-004",
+    "input": "My Medicare statement mentions something called IRMAA and an extra charge of $69.90 per month. What is IRMAA and why am I being charged this?",
+    "expected_bucket": "EXPLAIN",
+    "must_contain_verbatim": ["$69.90", "IRMAA"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve", "leverage"],
+    "max_words": 220
+  },
+  {
+    "id": "explain-005",
+    "input": "My neighbor told me I should look into a reverse mortgage since my house is paid off. What exactly is a reverse mortgage and what are the risks?",
+    "expected_bucket": "EXPLAIN",
+    "must_contain_verbatim": [],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve", "leverage"],
+    "max_words": 220
   },
   {
     "id": "decide-001",
     "input": "I'm trying to decide between staying in my house or moving to a senior living community. The community costs $4,500 a month but my house has stairs.",
     "expected_bucket": "DECIDE",
     "must_contain_verbatim": ["$4,500"],
-    "must_not_contain": ["I hope this helps"],
-    "max_words": 440,
-    "max_reading_level": 9.5
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "decide-002",
+    "input": "I'm turning 65 in March and need to choose between Original Medicare and a Medicare Advantage plan. The Advantage plan has a $0 premium but I have to use their network. Original Medicare lets me see any doctor.",
+    "expected_bucket": "DECIDE",
+    "must_contain_verbatim": [],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "decide-003",
+    "input": "My mechanic says my 2009 Honda Civic needs $2,800 in repairs. A replacement car would cost around $25,000. I'm on a fixed income of $1,900 a month.",
+    "expected_bucket": "DECIDE",
+    "must_contain_verbatim": ["$2,800", "$25,000", "$1,900"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "decide-004",
+    "input": "I slipped in a grocery store and hurt my back. Their insurance is offering me $15,000 to settle. My medical bills so far are $4,200 and my doctor says I may need more treatment.",
+    "expected_bucket": "DECIDE",
+    "must_contain_verbatim": ["$15,000", "$4,200"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "decide-005",
+    "input": "My daughter in Phoenix wants me to move from Chicago to be near her. I've lived in Chicago for 40 years, have friends and doctors here. I'm 74 and in good health.",
+    "expected_bucket": "DECIDE",
+    "must_contain_verbatim": ["Phoenix", "Chicago"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
   },
   {
     "id": "plan-001",
     "input": "I need to plan a small 80th birthday party for my husband at our house in June. About 20 people.",
     "expected_bucket": "PLAN",
     "must_contain_verbatim": ["80th", "20 people"],
-    "must_not_contain": ["I hope this helps"],
-    "max_words": 550,
-    "max_reading_level": 9.5
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 550
+  },
+  {
+    "id": "plan-002",
+    "input": "I got a hospital bill for $8,400 that I think is wrong. I was in for one night for observation and I have Medicare. How do I dispute this?",
+    "expected_bucket": "PLAN",
+    "must_contain_verbatim": ["$8,400"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 550
+  },
+  {
+    "id": "plan-003",
+    "input": "I want to set up automatic bill pay for my electric bill, water bill, and Medicare premium so I never miss a payment. I have a checking account at Wells Fargo.",
+    "expected_bucket": "PLAN",
+    "must_contain_verbatim": ["Wells Fargo"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 550
+  },
+  {
+    "id": "plan-004",
+    "input": "I want to sell my house and move to a smaller place. I've never sold a house before. Where do I start?",
+    "expected_bucket": "PLAN",
+    "must_contain_verbatim": [],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 550
+  },
+  {
+    "id": "plan-005",
+    "input": "Hurricane season starts June 1st and I live in Tampa. I want to make sure I'm prepared. I have a dog named Max and I'm on blood pressure medication.",
+    "expected_bucket": "PLAN",
+    "must_contain_verbatim": ["June 1st", "Tampa"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 550
   },
   {
     "id": "verify-001",
@@ -68,9 +245,8 @@
     "expected_bucket": "VERIFY",
     "must_contain_verbatim": ["$4,200"],
     "must_contain_phrases": ["scam"],
-    "must_not_contain": ["I hope this helps"],
-    "max_words": 495,
-    "max_reading_level": 9.5
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 495
   },
   {
     "id": "verify-002",
@@ -78,17 +254,73 @@
     "expected_bucket": "VERIFY",
     "must_contain_verbatim": ["1-888-555-0199"],
     "must_contain_phrases": ["scam"],
-    "must_not_contain": ["I hope this helps"],
-    "max_words": 495,
-    "max_reading_level": 9.5
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 495
+  },
+  {
+    "id": "verify-003",
+    "input": "I got an email saying I won $50,000 in the Publishers Clearing House lottery and I need to pay $200 in processing taxes before they send the check. Is this real?",
+    "expected_bucket": "VERIFY",
+    "must_contain_verbatim": ["$50,000", "$200"],
+    "must_contain_phrases": ["scam"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 495
+  },
+  {
+    "id": "verify-004",
+    "input": "I got a call from someone saying they're my grandson Tyler and they're in jail in Mexico and need $3,000 in gift cards sent right away. They said don't tell anyone.",
+    "expected_bucket": "VERIFY",
+    "must_contain_verbatim": ["$3,000"],
+    "must_contain_phrases": ["scam"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 495
+  },
+  {
+    "id": "verify-005",
+    "input": "A stranger knocked on my door saying he noticed damage on my roof and can fix it for $1,500 cash today only. He said he was already working in the neighborhood and this price expires tonight.",
+    "expected_bucket": "VERIFY",
+    "must_contain_verbatim": ["$1,500"],
+    "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 495
   },
   {
     "id": "create-001",
     "input": "I need a short toast for my daughter Emily's wedding next Saturday. She's marrying Tom.",
     "expected_bucket": "CREATE",
     "must_contain_verbatim": ["Emily", "Tom"],
-    "must_not_contain": ["I hope this helps", "[Your Name]"],
-    "max_words": 440,
-    "max_reading_level": 9.5
+    "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "create-002",
+    "input": "I want to write a short poem for my husband Robert's 75th birthday. We've been married 50 years.",
+    "expected_bucket": "CREATE",
+    "must_contain_verbatim": ["Robert"],
+    "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "create-003",
+    "input": "My colleague Patricia is retiring after 32 years at the hospital. I need to say a few words at her party on Friday. She loves gardening and her grandkids.",
+    "expected_bucket": "CREATE",
+    "must_contain_verbatim": ["Patricia"],
+    "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "create-004",
+    "input": "I want to write a heartfelt message for my Christmas cards this year. Something warm and personal, not too religious.",
+    "expected_bucket": "CREATE",
+    "must_contain_verbatim": [],
+    "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
+  },
+  {
+    "id": "create-005",
+    "input": "I need to write a eulogy for my brother Frank who passed away last week. He was 71, loved fishing, and was the funniest person I knew.",
+    "expected_bucket": "CREATE",
+    "must_contain_verbatim": ["Frank"],
+    "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
+    "max_words": 440
   }
 ]

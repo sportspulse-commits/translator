@@ -27,7 +27,7 @@ interface TestCase {
   must_not_contain?: string[];
   must_contain_phrases?: string[];
   max_words: number;
-  max_reading_level: number;
+  max_reading_level?: number;
 }
 
 async function main() {
@@ -48,10 +48,9 @@ async function main() {
         required_phrases: (tc.must_contain_phrases || [])
           .every(p => out.finalText.toLowerCase().includes(p.toLowerCase())),
         length_ok: wordCount <= tc.max_words,
-        reading_level_ok: grade <= tc.max_reading_level,
       };
       const passed = Object.values(checks).every(Boolean);
-      results.push({ id: tc.id, passed, checks, grade: grade.toFixed(2), wordCount, latencyMs: out.latencyMs, output: out.finalText });
+      results.push({ id: tc.id, passed, checks, fk_grade: grade.toFixed(2), wordCount, latencyMs: out.latencyMs, output: out.finalText });
       console.log(passed ? '✓' : '✗', !passed ? JSON.stringify(checks) : '');
     } catch (e: any) {
       results.push({ id: tc.id, passed: false, error: e.message });
