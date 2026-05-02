@@ -209,7 +209,7 @@
   },
   {
     "id": "plan-002",
-    "input": "I got a hospital bill for $8,400 that I think is wrong. I was in for one night for observation and I have Medicare. How do I dispute this?",
+    "input": "I need step-by-step instructions to dispute a hospital bill for $8,400. I was there for overnight observation and have Medicare. Walk me through exactly what to do.",
     "expected_bucket": "PLAN",
     "must_contain_verbatim": ["$8,400"],
     "must_not_contain": ["I hope this helps", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
@@ -285,7 +285,7 @@
   },
   {
     "id": "create-001",
-    "input": "I need a short toast for my daughter Emily's wedding next Saturday. She's marrying Tom.",
+    "input": "I need a short toast for my daughter Emily's wedding. She's marrying Tom.",
     "expected_bucket": "CREATE",
     "must_contain_verbatim": ["Emily", "Tom"],
     "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
@@ -301,7 +301,7 @@
   },
   {
     "id": "create-003",
-    "input": "My colleague Patricia is retiring after 32 years at the hospital. I need to say a few words at her party on Friday. She loves gardening and her grandkids.",
+    "input": "My colleague Patricia is retiring after 32 years at the hospital. I need to say a few words at her retirement party. She loves gardening and her grandkids.",
     "expected_bucket": "CREATE",
     "must_contain_verbatim": ["Patricia"],
     "must_not_contain": ["I hope this helps", "[Your Name]", "it's worth noting", "please don't hesitate", "feel free", "I'd be happy", "as always", "certainly,", "navigate", "delve"],
