@@ -1,10 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    outputFileTracingIncludes: {
-      '/api/help': ['./prompts/**/*'],
-    },
-  },
-};
+const nextConfig = {};
 
 export default nextConfig;
