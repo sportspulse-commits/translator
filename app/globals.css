@@ -633,6 +633,164 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
+   Scan button
+   ───────────────────────────────────────────────────────────────────── */
+.tx-scan {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 60px;
+  padding: 14px 20px;
+  margin-bottom: 14px;
+  background: #fff;
+  color: var(--tx-ink);
+  font-family: var(--tx-sans);
+  font-size: calc(18px * var(--tx-font-scale));
+  font-weight: 500;
+  border: 2px solid var(--tx-rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.tx-scan:hover:not(:disabled) {
+  background: var(--tx-bg-sunk);
+}
+
+.tx-scan-loading {
+  color: var(--tx-ink-mute);
+  cursor: wait;
+}
+
+.tx-scan-error {
+  font-family: var(--tx-sans);
+  font-size: calc(17px * var(--tx-font-scale));
+  color: #374151;
+  margin-top: -6px;
+  margin-bottom: 14px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Refine row — Shorter / More detail
+   ───────────────────────────────────────────────────────────────────── */
+.tx-refine-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tx-refine-btn {
+  appearance: none;
+  flex: 1;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #fff;
+  color: var(--tx-ink-soft);
+  font-family: var(--tx-sans);
+  font-size: calc(16px * var(--tx-font-scale));
+  font-weight: 500;
+  border: 2px solid var(--tx-rule-soft);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tx-refine-btn:hover:not(:disabled) {
+  border-color: var(--tx-rule);
+  color: var(--tx-ink);
+  background: var(--tx-bg);
+}
+
+.tx-refine-btn:disabled {
+  color: var(--tx-ink-mute);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Read aloud button
+   ───────────────────────────────────────────────────────────────────── */
+.tx-read {
+  appearance: none;
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: #fff;
+  color: var(--tx-ink);
+  font-family: var(--tx-sans);
+  font-size: calc(17px * var(--tx-font-scale));
+  font-weight: 500;
+  border: 2px solid var(--tx-rule-soft);
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.tx-read:hover {
+  background: var(--tx-bg-sunk);
+  border-color: var(--tx-rule);
+}
+
+.tx-read-on {
+  background: var(--tx-bg-sunk);
+  border-color: var(--tx-rule);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Share button
+   ───────────────────────────────────────────────────────────────────── */
+.tx-share {
+  appearance: none;
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: #fff;
+  color: var(--tx-ink);
+  font-family: var(--tx-sans);
+  font-size: calc(17px * var(--tx-font-scale));
+  font-weight: 500;
+  border: 2px solid var(--tx-rule-soft);
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.tx-share:hover {
+  background: var(--tx-bg-sunk);
+  border-color: var(--tx-rule);
+}
+
+.tx-share-done {
+  background: var(--tx-accent);
+  color: #fff;
+  border-color: var(--tx-accent);
+}
+
+.tx-share-done:hover {
+  background: var(--tx-accent-ink);
+  border-color: var(--tx-accent-ink);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
    Reduced motion
    ───────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { stripMarkdown } from '@/lib/stripMarkdown';
 
 const CopyIcon = ({ size = 22 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
@@ -20,14 +21,15 @@ export function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
+    const plain = stripMarkdown(text);
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(plain);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
       // Fallback for browsers without clipboard API
       const ta = document.createElement('textarea');
-      ta.value = text;
+      ta.value = plain;
       ta.style.position = 'fixed';
       ta.style.opacity = '0';
       document.body.appendChild(ta);

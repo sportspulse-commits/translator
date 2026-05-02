@@ -5,6 +5,10 @@ import remarkGfm from 'remark-gfm';
 import { VoiceButton } from '@/components/VoiceButton';
 import { StarterExamples } from '@/components/StarterExamples';
 import { CopyButton } from '@/components/CopyButton';
+import { ScanButton } from '@/components/ScanButton';
+import { RefineButtons } from '@/components/RefineButtons';
+import { ReadAloudButton } from '@/components/ReadAloudButton';
+import { ShareButton } from '@/components/ShareButton';
 
 type Phase = 'idle' | 'loading' | 'answer' | 'error';
 type Bucket = 'DECODE' | 'RESPOND' | 'COMPOSE' | 'EXPLAIN' | 'DECIDE' | 'PLAN' | 'VERIFY' | 'CREATE';
@@ -173,6 +177,8 @@ export default function Home() {
                 )}
               </div>
 
+              <ScanButton onText={(t) => setInput(prev => (prev ? prev + '\n\n' : '') + t)} />
+
               <VoiceButton
                 onTranscript={(t) => setInput(prev => (prev ? prev + ' ' : '') + t)}
               />
@@ -236,7 +242,11 @@ export default function Home() {
                 </div>
               </div>
 
+              <RefineButtons answer={answer} onRefined={setAnswer} />
+
               <CopyButton text={answer} />
+              <ReadAloudButton text={answer} />
+              <ShareButton text={answer} />
 
               <button type="button" className="tx-restart" onClick={handleReset}>
                 Start over
