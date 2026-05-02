@@ -1,31 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /* ─────────────────────────────────────────────────────────────────────
-   Design tokens — "Warm civic"
+   Translator — design tokens
+   "Warm civic" — like a beautifully redesigned piece of public
+   infrastructure. Calm, unhurried, generous in size and contrast.
    ───────────────────────────────────────────────────────────────────── */
 :root {
-  --tx-bg:         #faf7f2;
-  --tx-bg-sunk:    #f1ece1;
-  --tx-ink:        #1a1714;
-  --tx-ink-soft:   #4a443d;
-  --tx-ink-mute:   #8a8278;
-  --tx-rule:       #1a1714;
-  --tx-rule-soft:  #d9d2c4;
-  --tx-accent:     #1f5d4c;
-  --tx-accent-ink: #0f3d31;
-  --tx-cream:      #fdf6dd;
-  --tx-cream-rule: #e6d896;
-  --tx-warm-card:  #f5ecd9;
-  --tx-warm-rule:  #d9c79a;
-  --tx-alert:      #a8472a;
-  --tx-alert-soft: #fbeee5;
-  --tx-alert-rule: #dba488;
+  --tx-bg:        #faf7f2;
+  --tx-bg-sunk:   #f1ece1;
+  --tx-ink:       #1a1714;
+  --tx-ink-soft:  #4a443d;
+  --tx-ink-mute:  #8a8278;
+  --tx-rule:      #1a1714;
+  --tx-rule-soft: #d9d2c4;
+  --tx-accent:    #1f5d4c;
+  --tx-accent-ink:#0f3d31;
+  --tx-cream:     #fdf6dd;
+  --tx-cream-rule:#e6d896;
+  --tx-warm-card: #f5ecd9;
+  --tx-warm-rule: #d9c79a;
+  --tx-alert:     #a8472a;
+  --tx-alert-soft:#fbeee5;
+  --tx-alert-rule:#dba488;
 
-  /* Font stacks — populated by next/font CSS variables */
-  --tx-serif: var(--font-serif, "Source Serif 4", "Source Serif Pro", Georgia, serif);
-  --tx-sans:  var(--font-inter, "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  --tx-serif: "Source Serif 4", "Source Serif Pro", "Iowan Old Style",
+              "Georgia", serif;
+  --tx-sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+              Roboto, sans-serif;
 
   --tx-font-scale: 1;
 }
@@ -33,21 +32,11 @@
 /* ─────────────────────────────────────────────────────────────────────
    Container
    ───────────────────────────────────────────────────────────────────── */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-#__next, body > div:first-child {
-  height: 100%;
-}
-
 .tx-app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   height: 100%;
+  width: 100%;
   background: var(--tx-bg);
   color: var(--tx-ink);
   font-family: var(--tx-sans);
@@ -58,30 +47,26 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Header
+   Header — quiet wordmark, no chrome
    ───────────────────────────────────────────────────────────────────── */
 .tx-header {
   flex: 0 0 auto;
-  position: sticky;
-  top: 0;
-  z-index: 10;
   padding: 18px 24px 14px;
   border-bottom: 1px solid var(--tx-rule-soft);
-  background: var(--tx-bg);
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
-
 .tx-wordmark {
   font-family: var(--tx-serif);
   font-weight: 400;
   font-size: 22px;
   letter-spacing: -0.01em;
   color: var(--tx-ink);
-  line-height: 1;
 }
-
-.tx-wordmark-dot {
+.tx-wordmark::after {
+  /* tiny period — like the title page of a book */
+  content: ".";
   color: var(--tx-accent);
 }
 
@@ -94,9 +79,8 @@ html, body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
-
 .tx-stage {
-  padding: 28px 24px 64px;
+  padding: 28px 24px 48px;
   max-width: 640px;
   margin: 0 auto;
   display: flex;
@@ -115,7 +99,6 @@ html, body {
   color: var(--tx-ink);
   margin: 8px 0 12px;
 }
-
 .tx-sub {
   font-size: calc(18px * var(--tx-font-scale));
   color: var(--tx-ink-soft);
@@ -131,7 +114,6 @@ html, body {
   position: relative;
   margin-bottom: 18px;
 }
-
 .tx-input {
   width: 100%;
   display: block;
@@ -149,21 +131,13 @@ html, body {
   transition: box-shadow 120ms ease, border-color 120ms ease;
   box-sizing: border-box;
 }
-
 .tx-input::placeholder {
   color: var(--tx-ink-mute);
   font-style: italic;
 }
-
 .tx-input:focus {
   border-color: var(--tx-accent);
   box-shadow: 0 0 0 3px rgba(31, 93, 76, 0.18);
-}
-
-.tx-input-hint {
-  margin-top: 6px;
-  font-size: 14px;
-  color: #6b7280;
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -189,29 +163,19 @@ html, body {
   cursor: pointer;
   transition: background 120ms ease, transform 120ms ease;
 }
-
-.tx-voice:hover {
-  background: var(--tx-bg-sunk);
-}
-
-.tx-voice:active {
-  transform: translateY(1px);
-}
-
+.tx-voice:hover { background: var(--tx-bg-sunk); }
+.tx-voice:active { transform: translateY(1px); }
 .tx-voice-on {
   background: var(--tx-alert-soft);
   border-color: var(--tx-alert);
   color: var(--tx-alert);
 }
-
 .tx-voice-icon {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
-
 .tx-voice-pulse {
   position: absolute;
   inset: -8px;
@@ -220,25 +184,9 @@ html, body {
   opacity: 0.6;
   animation: tx-pulse 1.4s ease-out infinite;
 }
-
 @keyframes tx-pulse {
   0%   { transform: scale(0.8); opacity: 0.7; }
   100% { transform: scale(1.6); opacity: 0; }
-}
-
-.tx-voice-unsupported {
-  font-family: var(--tx-sans);
-  font-size: calc(18px * var(--tx-font-scale));
-  color: #374151;
-  margin-bottom: 14px;
-}
-
-.tx-voice-error {
-  font-family: var(--tx-sans);
-  font-size: calc(17px * var(--tx-font-scale));
-  color: #374151;
-  margin-top: -6px;
-  margin-bottom: 14px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -247,7 +195,6 @@ html, body {
 .tx-starters {
   margin: 6px 0 22px;
 }
-
 .tx-starters-toggle {
   appearance: none;
   background: none;
@@ -262,10 +209,7 @@ html, body {
   text-underline-offset: 4px;
   text-decoration-thickness: 1.5px;
 }
-
-.tx-starters-toggle:hover {
-  color: var(--tx-accent-ink);
-}
+.tx-starters-toggle:hover { color: var(--tx-accent-ink); }
 
 .tx-starters-list {
   list-style: none;
@@ -275,7 +219,6 @@ html, body {
   flex-direction: column;
   gap: 10px;
 }
-
 .tx-starter-item {
   appearance: none;
   width: 100%;
@@ -294,15 +237,11 @@ html, body {
   cursor: pointer;
   transition: border-color 120ms ease, background 120ms ease;
 }
-
 .tx-starter-item:hover {
   border-color: var(--tx-rule);
   background: var(--tx-bg);
 }
-
-.tx-starter-label {
-  line-height: 1.3;
-}
+.tx-starter-label { line-height: 1.3; }
 
 /* ─────────────────────────────────────────────────────────────────────
    Help me — primary action
@@ -323,18 +262,13 @@ html, body {
   border-radius: 14px;
   cursor: pointer;
   transition: background 120ms ease, transform 120ms ease;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
 }
-
 .tx-help:hover:not(:disabled) {
   background: var(--tx-accent-ink);
   border-color: var(--tx-accent-ink);
 }
-
-.tx-help:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
+.tx-help:active:not(:disabled) { transform: translateY(1px); }
 .tx-help:disabled {
   background: var(--tx-bg-sunk);
   color: var(--tx-ink-mute);
@@ -344,7 +278,7 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Recap (you said…)
+   Recap (you said …)
    ───────────────────────────────────────────────────────────────────── */
 .tx-recap {
   margin-bottom: 24px;
@@ -352,7 +286,6 @@ html, body {
   background: transparent;
   border-left: 3px solid var(--tx-rule-soft);
 }
-
 .tx-recap-label {
   font-family: var(--tx-sans);
   font-size: calc(13px * var(--tx-font-scale));
@@ -362,7 +295,6 @@ html, body {
   color: var(--tx-ink-mute);
   margin-bottom: 6px;
 }
-
 .tx-recap-text {
   font-family: var(--tx-serif);
   font-size: calc(17px * var(--tx-font-scale));
@@ -370,7 +302,6 @@ html, body {
   margin: 0;
   line-height: 1.45;
 }
-
 .tx-recap-collapsed .tx-recap-text {
   font-size: calc(15px * var(--tx-font-scale));
   display: -webkit-box;
@@ -390,12 +321,10 @@ html, body {
   align-items: center;
   gap: 18px;
 }
-
 .tx-working-dots {
   display: flex;
   gap: 10px;
 }
-
 .tx-dot {
   width: 12px;
   height: 12px;
@@ -404,16 +333,13 @@ html, body {
   opacity: 0.3;
   animation: tx-dot 1.4s ease-in-out infinite;
 }
-
 .tx-dot-1 { animation-delay: 0s; }
 .tx-dot-2 { animation-delay: 0.2s; }
 .tx-dot-3 { animation-delay: 0.4s; }
-
 @keyframes tx-dot {
   0%, 80%, 100% { opacity: 0.25; transform: scale(0.85); }
   40%           { opacity: 1;    transform: scale(1.05); }
 }
-
 .tx-working-text {
   font-family: var(--tx-serif);
   font-size: calc(20px * var(--tx-font-scale));
@@ -422,22 +348,9 @@ html, body {
   margin: 0;
 }
 
-.tx-cancel {
-  text-align: center;
-  margin-top: 8px;
-}
-
-.tx-cancel-btn {
-  appearance: none;
-  background: none;
-  border: 0;
-  color: var(--tx-alert);
-  font-family: var(--tx-sans);
-  font-size: calc(18px * var(--tx-font-scale));
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-  padding: 8px 0;
+@media (prefers-reduced-motion: reduce) {
+  .tx-dot { animation: none; opacity: 0.6; }
+  .tx-voice-pulse { animation: none; }
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -460,17 +373,14 @@ html, body {
   border: 2px solid;
   margin-bottom: 18px;
 }
-
 .tx-answer-calm {
   background: var(--tx-cream);
   border-color: var(--tx-cream-rule);
 }
-
 .tx-answer-warm {
   background: var(--tx-warm-card);
   border-color: var(--tx-warm-rule);
 }
-
 .tx-answer-alert {
   background: var(--tx-alert-soft);
   border-color: var(--tx-alert-rule);
@@ -498,53 +408,13 @@ html, body {
   line-height: 1.5;
   color: var(--tx-ink);
 }
-
 .tx-answer-body p {
   margin: 0 0 14px;
 }
-
-.tx-answer-body p:last-child {
-  margin-bottom: 0;
-}
-
-.tx-answer-body h1,
-.tx-answer-body h2,
-.tx-answer-body h3 {
-  font-family: var(--tx-serif);
-  font-weight: 600;
-  font-size: calc(20px * var(--tx-font-scale));
-  line-height: 1.3;
-  margin: 16px 0 8px;
-  color: var(--tx-ink);
-}
-
-.tx-answer-body h1:first-child,
-.tx-answer-body h2:first-child,
-.tx-answer-body h3:first-child {
-  margin-top: 0;
-}
-
-.tx-answer-body ul,
-.tx-answer-body ol {
-  padding-left: 22px;
-  margin: 0 0 14px;
-}
-
-.tx-answer-body li {
-  margin-bottom: 6px;
-  line-height: 1.5;
-}
-
-.tx-answer-body li:last-child {
-  margin-bottom: 0;
-}
-
-.tx-answer-body strong {
-  font-weight: 600;
-}
+.tx-answer-body p:last-child { margin-bottom: 0; }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Copy button
+   Copy button — secondary action, paired with answer
    ───────────────────────────────────────────────────────────────────── */
 .tx-copy {
   appearance: none;
@@ -566,24 +436,15 @@ html, body {
   margin-bottom: 12px;
   transition: background 120ms ease;
 }
-
-.tx-copy:hover {
-  background: var(--tx-bg-sunk);
-}
-
+.tx-copy:hover { background: var(--tx-bg-sunk); }
 .tx-copy-done {
   background: var(--tx-accent);
   color: #fff;
   border-color: var(--tx-accent);
 }
 
-.tx-copy-done:hover {
-  background: var(--tx-accent-ink);
-  border-color: var(--tx-accent-ink);
-}
-
 /* ─────────────────────────────────────────────────────────────────────
-   Restart + disclaimer
+   Restart link + disclaimer
    ───────────────────────────────────────────────────────────────────── */
 .tx-restart {
   appearance: none;
@@ -600,10 +461,7 @@ html, body {
   text-decoration-thickness: 1.5px;
   cursor: pointer;
 }
-
-.tx-restart:hover {
-  color: var(--tx-accent-ink);
-}
+.tx-restart:hover { color: var(--tx-accent-ink); }
 
 .tx-disclaimer {
   margin: 16px 0 0;
@@ -617,70 +475,92 @@ html, body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Error state
+   Demo picker — only on the demo build
    ───────────────────────────────────────────────────────────────────── */
-.tx-error {
-  width: 100%;
-  padding: 18px 20px;
-  background: var(--tx-alert-soft);
-  border: 2px solid var(--tx-alert-rule);
+.tx-demo {
+  margin-top: 32px;
+  padding: 18px 18px 16px;
+  background: var(--tx-bg-sunk);
   border-radius: 12px;
-  color: var(--tx-alert);
+  border: 1px dashed var(--tx-rule-soft);
+}
+.tx-demo-label {
   font-family: var(--tx-sans);
-  font-size: calc(18px * var(--tx-font-scale));
-  line-height: 1.4;
-  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tx-ink-mute);
+  margin-bottom: 10px;
+}
+.tx-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tx-demo-chip {
+  appearance: none;
+  padding: 6px 10px;
+  background: #fff;
+  color: var(--tx-ink-soft);
+  font-family: var(--tx-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--tx-rule-soft);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+.tx-demo-chip:hover {
+  border-color: var(--tx-accent);
+  color: var(--tx-accent);
+}
+.tx-demo-chip-on {
+  background: var(--tx-accent);
+  color: #fff;
+  border-color: var(--tx-accent);
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Reduced motion
+   Desktop layout — when the app is wider than ~700px, rebalance.
+   The phone build doesn't trigger this; the desktop build does.
    ───────────────────────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  .tx-dot { animation: none; opacity: 0.6; }
-  .tx-voice-pulse { animation: none; }
+.tx-app[data-layout="desktop"] .tx-stage {
+  max-width: 760px;
+  padding: 64px 56px 80px;
+}
+.tx-app[data-layout="desktop"] .tx-question {
+  font-size: calc(56px * var(--tx-font-scale));
+  margin-top: 24px;
+}
+.tx-app[data-layout="desktop"] .tx-sub {
+  font-size: calc(20px * var(--tx-font-scale));
+  margin-bottom: 36px;
+  max-width: 40ch;
+}
+.tx-app[data-layout="desktop"] .tx-header {
+  padding: 20px 56px 18px;
+}
+.tx-app[data-layout="desktop"] .tx-wordmark {
+  font-size: 24px;
+}
+.tx-app[data-layout="desktop"] .tx-input {
+  font-size: calc(22px * var(--tx-font-scale));
+  min-height: 180px;
+  padding: 22px 24px;
+}
+.tx-app[data-layout="desktop"] .tx-answer-body {
+  font-size: calc(22px * var(--tx-font-scale));
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   Desktop layout (≥ 760px)
+   Canvas page chrome (for the design canvas wrapper)
    ───────────────────────────────────────────────────────────────────── */
-@media (min-width: 760px) {
-  .tx-header {
-    padding: 20px 56px 18px;
-  }
-
-  .tx-wordmark {
-    font-size: 24px;
-  }
-
-  .tx-stage {
-    max-width: 760px;
-    padding: 64px 56px 80px;
-  }
-
-  .tx-question {
-    font-size: calc(56px * var(--tx-font-scale));
-    margin-top: 24px;
-  }
-
-  .tx-sub {
-    font-size: calc(20px * var(--tx-font-scale));
-    margin-bottom: 36px;
-    max-width: 40ch;
-  }
-
-  .tx-input {
-    font-size: calc(22px * var(--tx-font-scale));
-    min-height: 180px;
-    padding: 22px 24px;
-  }
-
-  .tx-answer-body {
-    font-size: calc(22px * var(--tx-font-scale));
-  }
-
-  .tx-answer-body h1,
-  .tx-answer-body h2,
-  .tx-answer-body h3 {
-    font-size: calc(22px * var(--tx-font-scale));
-  }
+body { margin: 0; }
+.page-chrome {
+  min-height: 100vh;
+  background: #ece7dc;
+  font-family: var(--tx-sans);
+  color: var(--tx-ink);
 }

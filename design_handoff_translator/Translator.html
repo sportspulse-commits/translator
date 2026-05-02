@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Translator — Hi-fi prototype</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+  /* Page-level chrome for the prototype canvas */
+  html, body {
+    margin: 0; padding: 0;
+    background: #ece7dc;
+    font-family: "Inter", -apple-system, sans-serif;
+    color: #1a1714;
+    -webkit-font-smoothing: antialiased;
+  }
+  .canvas {
+    min-height: 100vh;
+    padding: 56px 32px 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+  .canvas-head {
+    max-width: 880px;
+    width: 100%;
+    text-align: left;
+  }
+  .canvas-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a8278;
+    margin-bottom: 10px;
+  }
+  .canvas-title {
+    font-family: "Source Serif 4", serif;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    color: #1a1714;
+  }
+  .canvas-title em {
+    font-style: italic;
+    color: #1f5d4c;
+  }
+  .canvas-blurb {
+    font-family: "Source Serif 4", serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: #4a443d;
+    max-width: 56ch;
+    margin: 0;
+  }
+  .canvas-meta {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: #4a443d;
+  }
+  .canvas-meta span b {
+    color: #1a1714;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 11px;
+    display: block;
+    margin-bottom: 4px;
+    color: #8a8278;
+  }
+  .canvas-meta b { font-weight: 600; }
+
+  /* Section row */
+  .row {
+    width: 100%;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .row-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid #cfc8b8;
+    padding-bottom: 12px;
+  }
+  .row-title {
+    font-family: "Source Serif 4", serif;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .row-num {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: #8a8278;
+    font-weight: 600;
+  }
+  .row-blurb {
+    font-family: "Source Serif 4", serif;
+    font-size: 16px;
+    color: #4a443d;
+    margin: -12px 0 8px;
+    max-width: 60ch;
+    line-height: 1.5;
+  }
+
+  /* Phone frame stage — center the device, label below */
+  .phone-stage {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 56px 40px;
+    padding: 32px 0 8px;
+  }
+  .phone-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .phone-card-label {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: #1a1714;
+    text-align: center;
+    max-width: 260px;
+  }
+  .phone-card-label small {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #8a8278;
+  }
+
+  /* Desktop frame — a browser-like card */
+  .desktop-stage {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+  }
+  .browser {
+    width: 100%;
+    max-width: 1180px;
+    border: 1px solid #cfc8b8;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 24px 60px -28px rgba(26, 23, 20, 0.25);
+  }
+  .browser-bar {
+    height: 40px;
+    background: #f1ece1;
+    border-bottom: 1px solid #cfc8b8;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 8px;
+  }
+  .browser-dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: #d9d2c4;
+  }
+  .browser-url {
+    margin-left: 14px;
+    flex: 1;
+    background: #fff;
+    border: 1px solid #d9d2c4;
+    border-radius: 6px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    color: #8a8278;
+    max-width: 360px;
+  }
+  .browser-frame {
+    height: 760px;
+    background: #faf7f2;
+  }
+
+  /* Tonal callouts — small notes between sections */
+  .note {
+    max-width: 880px;
+    border-left: 3px solid #1f5d4c;
+    padding: 6px 0 6px 18px;
+    font-family: "Source Serif 4", serif;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #4a443d;
+  }
+  .note b { color: #1a1714; font-weight: 600; }
+
+  /* Swatches strip */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    width: 100%;
+    max-width: 880px;
+  }
+  .swatch {
+    background: #fff;
+    border: 1px solid #cfc8b8;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: "Inter", sans-serif;
+  }
+  .swatch-color {
+    height: 90px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .swatch-text {
+    padding: 10px 12px 12px;
+    font-size: 12px;
+    color: #4a443d;
+  }
+  .swatch-text b {
+    color: #1a1714;
+    font-weight: 600;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .swatch-text code {
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 11px;
+    color: #8a8278;
+  }
+
+  @media (max-width: 760px) {
+    .canvas { padding: 32px 16px 80px; gap: 40px; }
+    .canvas-title { font-size: 36px; }
+    .palette { grid-template-columns: repeat(2, 1fr); }
+    .browser-frame { height: 600px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+
+  <!-- ────────── Hero / context ────────── -->
+  <header class="canvas-head">
+    <div class="canvas-eyebrow">Translator · Hi-fi prototype</div>
+    <h1 class="canvas-title">A calm place to ask <em>"what's going on?"</em></h1>
+    <p class="canvas-blurb">
+      A single-screen AI app for older adults. You type or speak in your own
+      words; you get back something clear and copyable. No accounts, no
+      settings, no jargon. The pipeline that classifies, optimizes, and
+      flattens the response is hidden by design — every interaction is one
+      shot, one button, one answer.
+    </p>
+    <div class="canvas-meta">
+      <span><b>Aesthetic</b> Warm civic — public-infrastructure calm</span>
+      <span><b>Type</b> Source Serif 4 · Inter</span>
+      <span><b>Min touch target</b> 60–68px</span>
+      <span><b>Min body</b> 20px</span>
+    </div>
+  </header>
+
+  <!-- ────────── Palette ────────── -->
+  <section class="row">
+    <div class="row-head">
+      <h2 class="row-title">Palette</h2>
+      <div class="row-num">01 · Tokens</div>
+    </div>
+    <p class="row-blurb">
+      Warm off-white as the page, deep ink as the type. One trusted accent
+      (forest green) for action and links. Cream for the answer card so it
+      feels like something handed to you. Terra-cotta is reserved — it only
+      appears on a VERIFY response when the system is telling you something
+      is a scam.
+    </p>
+    <div class="palette">
+      <div class="swatch"><div class="swatch-color" style="background:#faf7f2"></div><div class="swatch-text"><b>Page</b><code>#faf7f2</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1a1714"></div><div class="swatch-text"><b>Ink</b><code>#1a1714</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1f5d4c"></div><div class="swatch-text"><b>Accent</b><code>#1f5d4c</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#fdf6dd"></div><div class="swatch-text"><b>Cream</b><code>#fdf6dd</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#f5ecd9"></div><div class="swatch-text"><b>Warm card</b><code>#f5ecd9</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#a8472a"></div><div class="swatch-text"><b>Alert</b><code>#a8472a</code></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#d9d2c4"></div><div class="swatch-text"><b>Rule</b><code>#d9d2c4</code></div></div>
+    </div>
+  </section>
+
+  <!-- ────────── Live mobile prototype ────────── -->
+  <section class="row">
+    <div class="row-head">
+      <h2 class="row-title">Live mobile prototype</h2>
+      <div class="row-num">02 · iPhone · interactive</div>
+    </div>
+    <p class="row-blurb">
+      Tap any of the eight scenario chips at the bottom (DECODE, VERIFY,
+      RESPOND, COMPOSE, EXPLAIN, PLAN, DECIDE, CREATE) to run a realistic
+      flow end-to-end. Or type freely, tap "Show me what to ask" for
+      starters, or use the simulated voice button. The "Help me" button kicks
+      the (mocked) pipeline; after ~2.4s the answer card lands.
+    </p>
+
+    <div class="phone-stage">
+      <div class="phone-card">
+        <div id="phoneRoot"></div>
+        <div class="phone-card-label">
+          The full app — try every state
+          <small>iPhone 14 Pro · 393 × 852</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Why this color, not blue?</b> Tech blue would push the app toward
+      "AI assistant" expectations. Forest green reads closer to civic and
+      financial trust — a notarized document, a savings bond — without
+      drifting into the AARP-beige cliché.
+    </div>
+  </section>
+
+  <!-- ────────── Desktop view ────────── -->
+  <section class="row">
+    <div class="row-head">
+      <h2 class="row-title">Desktop view</h2>
+      <div class="row-num">03 · Responsive · interactive</div>
+    </div>
+    <p class="row-blurb">
+      Same single-screen contract, scaled up. The question grows to 56px so
+      it carries the page; the input pad widens; max content width holds at
+      760px so a line of body text never exceeds the comfortable read.
+    </p>
+    <div class="desktop-stage">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-dot"></div>
+          <div class="browser-url">translator.app</div>
+        </div>
+        <div class="browser-frame">
+          <div id="desktopRoot" style="height:100%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ────────── States reference ────────── -->
+  <section class="row">
+    <div class="row-head">
+      <h2 class="row-title">Key answer states</h2>
+      <div class="row-num">04 · Tonal variation</div>
+    </div>
+    <p class="row-blurb">
+      Three answer-card tones — never shown to the user as labels, only felt.
+      <b>Calm cream</b> is the default for explanation, planning, decisions.
+      <b>Warm parchment</b> is for correspondence. <b>Alert terra-cotta</b>
+      is only ever used for VERIFY responses when fraud is detected.
+    </p>
+
+    <div class="phone-stage">
+      <div class="phone-card">
+        <div id="state-decode"></div>
+        <div class="phone-card-label">
+          DECODE · Calm cream
+          <small>Medicare letter, premium increase</small>
+        </div>
+      </div>
+      <div class="phone-card">
+        <div id="state-verify"></div>
+        <div class="phone-card-label">
+          VERIFY · Alert terra-cotta
+          <small>IRS gift-card scam — "this is a scam"</small>
+        </div>
+      </div>
+      <div class="phone-card">
+        <div id="state-compose"></div>
+        <div class="phone-card-label">
+          COMPOSE · Warm parchment
+          <small>Thank-you note to a neighbor</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    <b>Notes for next pass.</b> Real backend wiring (Anthropic SDK, Upstash
+    logging, Web Speech). A non-mocked first-run state where examples are
+    hidden until the user pauses for &gt;1.2s. An "I changed my mind" path
+    on the answer screen for nudging a reply tone (shorter / warmer /
+    more formal). And a print-friendly answer view, for the users who
+    will actually print this and put it in a folder.
+  </div>
+
+</div>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="scenarios.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+
+<!-- Tweaks defaults -->
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "fontScale": 1,
+  "showVoice": true,
+  "accent": "#1f5d4c",
+  "accentInk": "#0f3d31"
+}/*EDITMODE-END*/;
+</script>
+
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+// ───────────────────────────────────────────────────────────────────
+// Tweaks panel — wired up via the starter helpers
+// ───────────────────────────────────────────────────────────────────
+function ProtoTweaks({ onChange }) {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(() => { onChange(tweaks); }, [tweaks]);
+
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection title="Type">
+        <TweakRadio
+          label="Body size"
+          value={tweaks.fontScale}
+          onChange={(v) => setTweak("fontScale", v)}
+          options={[
+            { value: 0.92, label: "S" },
+            { value: 1, label: "M" },
+            { value: 1.12, label: "L" },
+            { value: 1.24, label: "XL" },
+          ]}
+        />
+      </TweakSection>
+      <TweakSection title="Voice">
+        <TweakToggle
+          label="Show voice button"
+          value={tweaks.showVoice}
+          onChange={(v) => setTweak("showVoice", v)}
+        />
+      </TweakSection>
+      <TweakSection title="Accent color">
+        <TweakRadio
+          label="Trust color"
+          value={tweaks.accent}
+          onChange={(v) => {
+            if (v === "#1f5d4c") {
+              setTweak({ accent: "#1f5d4c", accentInk: "#0f3d31" });
+            } else if (v === "#1d4ed8") {
+              setTweak({ accent: "#1d4ed8", accentInk: "#1e3a8a" });
+            } else if (v === "#7c2d12") {
+              setTweak({ accent: "#7c2d12", accentInk: "#5a1f0d" });
+            } else if (v === "#0f1c2e") {
+              setTweak({ accent: "#0f1c2e", accentInk: "#000814" });
+            }
+          }}
+          options={[
+            { value: "#1f5d4c", label: "Forest" },
+            { value: "#1d4ed8", label: "Civic blue" },
+            { value: "#7c2d12", label: "Library red" },
+            { value: "#0f1c2e", label: "Ink" },
+          ]}
+        />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+// ───────────────────────────────────────────────────────────────────
+// Tweak-aware wrapper that pushes CSS vars onto a root element
+// ───────────────────────────────────────────────────────────────────
+function applyTweaks(tweaks) {
+  if (!tweaks) return;
+  const r = document.documentElement;
+  if (tweaks.accent)    r.style.setProperty("--tx-accent", tweaks.accent);
+  if (tweaks.accentInk) r.style.setProperty("--tx-accent-ink", tweaks.accentInk);
+}
+
+// ───────────────────────────────────────────────────────────────────
+// Mount: phone (interactive)
+// ───────────────────────────────────────────────────────────────────
+function PhoneMount() {
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  React.useEffect(() => applyTweaks(tweaks), [tweaks]);
+
+  return (
+    <>
+      <IOSDevice width={393} height={812}>
+        <div style={{ height: "100%", width: "100%" }}>
+          <TranslatorApp tweaks={tweaks} />
+        </div>
+      </IOSDevice>
+      <ProtoTweaks onChange={setTweaks} />
+    </>
+  );
+}
+
+// ───────────────────────────────────────────────────────────────────
+// Mount: desktop (interactive)
+// ───────────────────────────────────────────────────────────────────
+function DesktopMount() {
+  return (
+    <div className="tx-app" data-layout="desktop" style={{ height: "100%" }}>
+      <DesktopAppInner />
+    </div>
+  );
+}
+function DesktopAppInner() {
+  return <TranslatorApp tweaks={{ fontScale: 1, showVoice: true }} />;
+}
+
+// ───────────────────────────────────────────────────────────────────
+// Mount: pre-set state (for the states reference row)
+// Auto-loads a scenario and skips to the answer phase.
+// ───────────────────────────────────────────────────────────────────
+function StatePreview({ scenarioId, mountId }) {
+  // Render an iOS frame with the app, and after mount inject the scenario
+  // by directly invoking the pipeline mock via a small bootstrapped wrapper.
+  return (
+    <IOSDevice width={393} height={812}>
+      <PreloadedTranslator scenarioId={scenarioId} />
+    </IOSDevice>
+  );
+}
+
+function PreloadedTranslator({ scenarioId }) {
+  // Reuse TranslatorApp by simulating a click on the demo chip after mount.
+  // Easier: wrap a copy that pre-seeds state via a small auto-runner.
+  return <AutoRunningTranslator scenarioId={scenarioId} />;
+}
+
+function AutoRunningTranslator({ scenarioId }) {
+  const [, force] = useState(0);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const id = setTimeout(() => {
+      // Look up the scenario chip in this subtree and click it.
+      const root = ref.current;
+      if (!root) return;
+      const scenario = window.SCENARIOS[scenarioId];
+      if (!scenario) return;
+      const chips = root.querySelectorAll(".tx-demo-chip");
+      for (const c of chips) {
+        if (c.textContent.trim() === scenario.bucket) {
+          c.click();
+          break;
+        }
+      }
+    }, 250);
+    return () => clearTimeout(id);
+  }, [scenarioId]);
+
+  return (
+    <div ref={ref} style={{ height: "100%", width: "100%" }}>
+      <TranslatorApp tweaks={{ fontScale: 1, showVoice: true }} hideDemoPicker={false} />
+    </div>
+  );
+}
+
+// Mount everything
+ReactDOM.createRoot(document.getElementById("phoneRoot")).render(<PhoneMount />);
+ReactDOM.createRoot(document.getElementById("desktopRoot")).render(<DesktopMount />);
+ReactDOM.createRoot(document.getElementById("state-decode")).render(<StatePreview scenarioId="decode" />);
+ReactDOM.createRoot(document.getElementById("state-verify")).render(<StatePreview scenarioId="verify" />);
+ReactDOM.createRoot(document.getElementById("state-compose")).render(<StatePreview scenarioId="compose" />);
+</script>
+
+</body>
+</html>

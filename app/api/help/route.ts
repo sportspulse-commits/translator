@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { runPipeline } from '@/lib/pipeline';
 
 export const maxDuration = 30;
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     const result = await runPipeline(input.trim());
-    return NextResponse.json({ text: result.finalText });
+    return NextResponse.json({ text: result.finalText, bucket: result.bucket });
   } catch (err) {
     console.error('Pipeline error:', err);
     return NextResponse.json({ error: 'pipeline_failure' }, { status: 500 });
